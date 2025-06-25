@@ -58,37 +58,38 @@
     overflow-x: hidden;
   }
 
-  /* Custom scrollbar */
+  /* Hide scrollbars but keep functionality */
   ::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  ::-webkit-scrollbar-track {
-    @apply bg-background;
+    width: 0px;
+    background: transparent;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-gradient-to-b from-red-500 to-red-700 rounded-full;
+    background: transparent;
   }
 
-  ::-webkit-scrollbar-thumb:hover {
-    @apply from-red-400 to-red-600;
+  /* Firefox */
+  html {
+    scrollbar-width: none;
   }
 
-  /* Mobile scrollbar */
-  @media (max-width: 768px) {
-    ::-webkit-scrollbar {
-      width: 4px;
-    }
+  /* For mobile devices */
+  * {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
   }
 }
 
 @layer components {
   .glass-effect {
     background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   }
 
   .gradient-text {
@@ -99,21 +100,12 @@
   }
 
   .video-card-hover {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-style: preserve-3d;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .video-card-hover:hover {
-    transform: translateY(-4px) rotateX(1deg);
-    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.15);
-  }
-
-  .floating-animation {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .pulse-glow {
-    animation: pulseGlow 2s ease-in-out infinite alternate;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.15);
   }
 
   .slide-in-left {
@@ -124,37 +116,26 @@
     animation: slideInRight 0.6s ease-out forwards;
   }
 
-  .scale-in {
-    animation: scaleIn 0.5s ease-out forwards;
-  }
-
-  .gradient-border {
-    background: linear-gradient(135deg, #ef4444, #dc2626) padding-box,
-                linear-gradient(135deg, #ef4444, #dc2626) border-box;
-    border: 2px solid transparent;
-  }
-
   .neon-glow {
-    box-shadow: 0 0 15px rgba(239, 68, 68, 0.4),
-                0 0 25px rgba(239, 68, 68, 0.2),
-                0 0 35px rgba(239, 68, 68, 0.1);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.3),
+                0 0 20px rgba(239, 68, 68, 0.15);
   }
 
   /* Mobile optimizations */
   @media (max-width: 768px) {
     .glass-effect {
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
     }
     
     .video-card-hover:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.1);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
     }
 
     .neon-glow {
-      box-shadow: 0 0 10px rgba(239, 68, 68, 0.3),
-                  0 0 20px rgba(239, 68, 68, 0.15);
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.25),
+                  0 0 16px rgba(239, 68, 68, 0.1);
     }
   }
 
@@ -181,20 +162,10 @@
   }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes pulseGlow {
-  0% { box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); }
-  100% { box-shadow: 0 0 25px rgba(239, 68, 68, 0.4); }
-}
-
 @keyframes slideInLeft {
   from {
     opacity: 0;
-    transform: translateX(-30px);
+    transform: translateX(-20px);
   }
   to {
     opacity: 1;
@@ -205,7 +176,7 @@
 @keyframes slideInRight {
   from {
     opacity: 0;
-    transform: translateX(30px);
+    transform: translateX(20px);
   }
   to {
     opacity: 1;
@@ -213,32 +184,10 @@
   }
 }
 
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInBottom {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -247,11 +196,7 @@
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.8s ease-out forwards;
-}
-
-.animate-slide-in-bottom {
-  animation: slideInBottom 0.6s ease-out forwards;
+  animation: fadeIn 0.6s ease-out forwards;
 }
 
 /* Touch improvements for mobile */
@@ -264,5 +209,13 @@
   .video-card-hover:active {
     transform: scale(0.98);
     transition: transform 0.1s ease-out;
+  }
+}
+
+/* Ensure no horizontal scroll on mobile */
+@media (max-width: 768px) {
+  body {
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 }

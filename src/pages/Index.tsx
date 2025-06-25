@@ -14,14 +14,14 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background w-full overflow-x-hidden">
       <Header onToggleSidebar={toggleSidebar} />
       
-      <div className="flex relative">
+      <div className="flex relative w-full">
         <Sidebar isOpen={sidebarOpen} />
         
         <main className={cn(
-          "flex-1 transition-all duration-500 ease-in-out min-h-screen",
+          "flex-1 transition-all duration-500 ease-in-out min-h-screen w-full",
           sidebarOpen ? "lg:ml-64" : "lg:ml-16",
           "ml-0"
         )}>
@@ -30,7 +30,7 @@ const Index = () => {
         </main>
       </div>
 
-      {/* Mobile Overlay - Fixed positioning */}
+      {/* Mobile Overlay */}
       {sidebarOpen && (
         <div 
           className="fixed inset-0 bg-black/60 z-20 lg:hidden backdrop-blur-sm"

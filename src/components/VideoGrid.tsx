@@ -1,3 +1,4 @@
+
 import React from 'react';
 import VideoCard from './VideoCard';
 
@@ -110,68 +111,70 @@ const VideoGrid = () => {
   const latestVideos = videos.slice(7);
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-6 space-y-8 sm:space-y-12">
-      {/* Featured Section */}
-      <section className="space-y-4 sm:space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="space-y-1 sm:space-y-2">
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold gradient-text">Featured Videos</h2>
-            <p className="text-sm sm:text-base text-muted-foreground">Die heißesten Videos, handverlesen für dich</p>
-          </div>
-          <div className="hidden md:block">
-            <div className="flex gap-2">
-              <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-              <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-              <div className="w-2 h-2 bg-red-300 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+    <div className="w-full min-h-screen bg-background">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 py-4 sm:py-6 space-y-6 sm:space-y-8">
+        {/* Featured Section */}
+        <section className="space-y-3 sm:space-y-4">
+          <div className="flex items-center justify-between px-1">
+            <div className="space-y-1">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text">Featured Videos</h2>
+              <p className="text-xs sm:text-sm text-muted-foreground">Die heißesten Videos, handverlesen für dich</p>
+            </div>
+            <div className="hidden sm:block">
+              <div className="flex gap-1">
+                <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                <div className="w-2 h-2 bg-red-300 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+              </div>
             </div>
           </div>
-        </div>
-        
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 justify-items-center">
-          {featuredVideos.map((video, index) => (
-            <div key={`featured-${index}`} className="w-full max-w-sm animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-              <VideoCard {...video} />
-            </div>
-          ))}
-        </div>
-      </section>
+          
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 lg:gap-4">
+            {featuredVideos.map((video, index) => (
+              <div key={`featured-${index}`} className="w-full animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                <VideoCard {...video} />
+              </div>
+            ))}
+          </div>
+        </section>
 
-      {/* Trending Section */}
-      <section className="space-y-4 sm:space-y-6">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold">Trending heute</h2>
-          <div className="flex items-center gap-1">
-            <div className="w-2 h-2 sm:w-3 sm:h-3 bg-gradient-to-r from-red-500 to-orange-500 rounded-full"></div>
-            <span className="text-xs sm:text-sm text-muted-foreground">Hot</span>
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 justify-items-center">
-          {trendingVideos.map((video, index) => (
-            <div key={`trending-${index}`} className="w-full max-w-sm slide-in-left" style={{ animationDelay: `${index * 0.15}s` }}>
-              <VideoCard {...video} />
+        {/* Trending Section */}
+        <section className="space-y-3 sm:space-y-4">
+          <div className="flex items-center gap-2 px-1">
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold">Trending heute</h2>
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-gradient-to-r from-red-500 to-orange-500 rounded-full"></div>
+              <span className="text-xs text-muted-foreground">Hot</span>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
+          
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
+            {trendingVideos.map((video, index) => (
+              <div key={`trending-${index}`} className="w-full slide-in-left" style={{ animationDelay: `${index * 0.15}s` }}>
+                <VideoCard {...video} />
+              </div>
+            ))}
+          </div>
+        </section>
 
-      {/* Latest Section */}
-      <section className="space-y-4 sm:space-y-6">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold">Neueste Videos</h2>
-          <div className="px-2 py-0.5 sm:py-1 bg-green-500/20 text-green-400 text-xs rounded-full">
-            Neu
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 justify-items-center">
-          {latestVideos.map((video, index) => (
-            <div key={`latest-${index}`} className="w-full max-w-sm slide-in-right" style={{ animationDelay: `${index * 0.1}s` }}>
-              <VideoCard {...video} />
+        {/* Latest Section */}
+        <section className="space-y-3 sm:space-y-4 pb-4">
+          <div className="flex items-center gap-2 px-1">
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold">Neueste Videos</h2>
+            <div className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full">
+              Neu
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
+          
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 lg:gap-4">
+            {latestVideos.map((video, index) => (
+              <div key={`latest-${index}`} className="w-full slide-in-right" style={{ animationDelay: `${index * 0.1}s` }}>
+                <VideoCard {...video} />
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
     </div>
   );
 };
