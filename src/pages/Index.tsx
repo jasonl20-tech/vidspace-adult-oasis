@@ -1,13 +1,19 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
 import VideoGrid from '@/components/VideoGrid';
 import Footer from '@/components/Footer';
+import { useAuth } from '@/hooks/useAuth';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { LogIn, UserCog } from 'lucide-react';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { user, isAdmin } = useAuth();
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -16,6 +22,32 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background w-full overflow-x-hidden">
       <Header onToggleSidebar={toggleSidebar} />
+      
+      {/* Auth buttons in top right */}
+      <div className="fixed top-4 right-4 z-50 flex gap-2">
+        {!user ? (
+          <Button 
+            onClick={() => navigate('/auth')}
+            className="neon-glow"
+          >
+            <LogIn className="mr-2 h-4 w-4" />
+            Login
+          </Button>
+        ) : (
+          <>
+            {isAdmin && (
+              <Button 
+                onClick={() => navigate('/admin')}
+                variant="outline"
+                className="glass-effect"
+              >
+                <UserCog className="mr-2 h-4 w-4" />
+                Admin
+              </Button>
+            )}
+          </>
+        )}
+      </div>
       
       <div className="flex relative w-full">
         <Sidebar isOpen={sidebarOpen} />
