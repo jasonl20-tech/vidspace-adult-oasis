@@ -12,6 +12,7 @@ interface Video {
   like_count: number;
   created_at: string;
   is_premium: boolean;
+  slug: string;
   categories: { name: string; color: string } | null;
   profiles: { username: string } | null;
 }
@@ -143,6 +144,7 @@ const VideoGrid = () => {
                 {videos.length > 0 ? (
                   <VideoCard
                     id={video.id}
+                    slug={video.slug}
                     title={video.title}
                     thumbnail={video.thumbnail_url || "photo-1649972904349-6e44c42644a7"}
                     duration={formatDuration(video.duration)}
@@ -179,6 +181,7 @@ const VideoGrid = () => {
                   <div key={`trending-${video.id}`} className="w-full slide-in-left" style={{ animationDelay: `${index * 0.15}s` }}>
                     <VideoCard
                       id={video.id}
+                      slug={video.slug}
                       title={video.title}
                       thumbnail={video.thumbnail_url || "photo-1581091226825-a6a2a5aee158"}
                       duration={formatDuration(video.duration)}
@@ -209,6 +212,7 @@ const VideoGrid = () => {
                     <div key={`latest-${video.id}`} className="w-full slide-in-right" style={{ animationDelay: `${index * 0.1}s` }}>
                       <VideoCard
                         id={video.id}
+                        slug={video.slug}
                         title={video.title}
                         thumbnail={video.thumbnail_url || "photo-1721322800607-8c38375eef04"}
                         duration={formatDuration(video.duration)}

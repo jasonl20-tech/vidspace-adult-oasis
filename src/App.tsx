@@ -29,6 +29,11 @@ const App = () => (
                 <VideoWatch />
               </AuthGuard>
             } />
+            <Route path="/:slug" element={
+              <AuthGuard requireAuth={true}>
+                <VideoWatch />
+              </AuthGuard>
+            } />
             <Route path="/admin" element={
               <AuthGuard requireAuth={true} requireAdmin={true}>
                 <AdminPanel />

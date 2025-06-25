@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 
 interface VideoCardProps {
   id?: string;
+  slug?: string;
   title: string;
   thumbnail: string;
   duration: string;
@@ -21,6 +22,7 @@ interface VideoCardProps {
 
 const VideoCard = ({ 
   id,
+  slug,
   title, 
   thumbnail, 
   duration, 
@@ -34,7 +36,9 @@ const VideoCard = ({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (id) {
+    if (slug) {
+      navigate(`/${slug}`);
+    } else if (id) {
       navigate(`/watch/${id}`);
     }
   };

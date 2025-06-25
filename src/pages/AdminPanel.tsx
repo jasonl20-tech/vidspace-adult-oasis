@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +9,9 @@ import { Switch } from '@/components/ui/switch';
 import { supabase } from '@/integrations/supabase/client';
 import { Users, Video, Settings, Crown, Trash2, Eye } from 'lucide-react';
 import { toast } from 'sonner';
-import VideoUploadForm from '@/components/VideoUploadForm';
+import AdminHeader from '@/components/admin/AdminHeader';
+import CategoryManager from '@/components/admin/CategoryManager';
+import ApiVideoUpload from '@/components/admin/ApiVideoUpload';
 
 const AdminPanel = () => {
   const { user, isAdmin, loading } = useAuth();
@@ -145,19 +146,17 @@ const AdminPanel = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <AdminHeader />
+      
       <div className="container mx-auto px-4 py-6">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold gradient-text mb-2">Admin Panel</h1>
-          <p className="text-muted-foreground">Manage your platform content and users</p>
-        </div>
-
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="videos">Videos</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
             <TabsTrigger value="categories">Categories</TabsTrigger>
             <TabsTrigger value="upload">Upload</TabsTrigger>
+            <TabsTrigger value="api-upload">API Upload</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -237,13 +236,18 @@ const AdminPanel = () => {
                           <Badge variant={video.is_active ? "default" : "secondary"}>
                             {video.is_active ? "Active" : "Inactive"}
                           </Badge>
+                          {video.slug && (
+                            <Badge variant="outline" className="text-xs">
+                              /{video.slug}
+                            </Badge>
+                          )}
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => navigate(`/watch/${video.id}`)}
+                          onClick={() => navigate(`/${video.slug}`)}
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
@@ -325,33 +329,25 @@ const AdminPanel = () => {
           </TabsContent>
 
           <TabsContent value="categories" className="space-y-6">
+            <CategoryManager />
+          </TabsContent>
+
+          <TabsContent value="upload" className="space-y-6">
             <Card className="glass-effect">
               <CardHeader>
-                <CardTitle>Category Management</CardTitle>
-                <CardDescription>Manage video categories</CardDescription>
+                <CardTitle>Video Upload</CardTitle>
+                <CardDescription>Upload new videos to your platform</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {categories.map((category) => (
-                    <div key={category.id} className="p-4 border rounded-lg">
-                      <div className="flex items-center justify-between mb-2">
-                        <Badge style={{ backgroundColor: `${category.color}20`, color: category.color }}>
-                          {category.name}
-                        </Badge>
-                        <Badge variant={category.is_active ? "default" : "secondary"}>
-                          {category.is_active ? "Active" : "Inactive"}
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-muted-foreground">{category.description}</p>
-                    </div>
-                  ))}
-                </div>
+                <p className="text-muted-foreground text-center py-8">
+                  Traditional video upload form coming soon...
+                </p>
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="upload" className="space-y-6">
-            <VideoUploadForm onUploadSuccess={fetchVideos} />
+          <TabsContent value="api-upload" className="space-y-6">
+            <ApiVideoUpload onUploadSuccess={fetchVideos} />
           </TabsContent>
         </Tabs>
       </div>

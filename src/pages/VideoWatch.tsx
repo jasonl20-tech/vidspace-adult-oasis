@@ -21,6 +21,7 @@ interface Video {
   dislike_count: number;
   is_premium: boolean;
   duration: number;
+  slug: string;
   categories: { name: string; color: string } | null;
   profiles: { username: string } | null;
 }
@@ -34,7 +35,7 @@ interface Comment {
 }
 
 const VideoWatch = () => {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const { user, isPremium } = useAuth();
   const [video, setVideo] = useState<Video | null>(null);
@@ -43,14 +44,12 @@ const VideoWatch = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (id) {
-      fetchVideo(id);
-      fetchComments(id);
-      recordView(id);
+    if (slug) {
+      fetchVideoBySlug(slug);
     }
-  }, [id]);
+  }, [slug]);
 
-  const fetchVideo = async (videoId: string) => {
+  const fetchVideoBySlug = async (videoSlug: string) => {
     try {
       const { data, error } = await supabase
         .from('videos')
@@ -59,11 +58,17 @@ const VideoWatch = () => {
           categories(name, color),
           profiles(username)
         `)
-        .eq('id', videoId)
+        .eq('slug', videoSlug)
+        .eq('is_active', true)
         .single();
 
       if (error) throw error;
       setVideo(data);
+      
+      if (data) {
+        fetchComments(data.id);
+        recordView(data.id);
+      }
     } catch (error) {
       console.error('Error fetching video:', error);
       toast.error('Failed to load video');
@@ -114,13 +119,13 @@ const VideoWatch = () => {
   };
 
   const addComment = async () => {
-    if (!user || !newComment.trim() || !id) return;
+    if (!user || !newComment.trim() || !video) return;
 
     try {
       const { error } = await supabase
         .from('video_comments')
         .insert({
-          video_id: id,
+          video_id: video.id,
           user_id: user.id,
           content: newComment.trim()
         });
@@ -128,7 +133,7 @@ const VideoWatch = () => {
       if (error) throw error;
 
       setNewComment('');
-      fetchComments(id);
+      fetchComments(video.id);
       toast.success('Comment added!');
     } catch (error) {
       console.error('Error adding comment:', error);

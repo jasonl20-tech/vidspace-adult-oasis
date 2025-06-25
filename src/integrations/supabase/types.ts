@@ -299,6 +299,7 @@ export type Database = {
           is_active: boolean | null
           is_premium: boolean | null
           like_count: number | null
+          slug: string
           thumbnail_url: string | null
           title: string
           updated_at: string | null
@@ -317,6 +318,7 @@ export type Database = {
           is_active?: boolean | null
           is_premium?: boolean | null
           like_count?: number | null
+          slug: string
           thumbnail_url?: string | null
           title: string
           updated_at?: string | null
@@ -335,6 +337,7 @@ export type Database = {
           is_active?: boolean | null
           is_premium?: boolean | null
           like_count?: number | null
+          slug?: string
           thumbnail_url?: string | null
           title?: string
           updated_at?: string | null
@@ -364,7 +367,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_slug: {
+        Args: { title: string }
+        Returns: string
+      }
+      increment_view_count: {
+        Args: { video_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
