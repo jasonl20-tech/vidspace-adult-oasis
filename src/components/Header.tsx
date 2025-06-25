@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Search, Upload, User, Bell, Menu, Crown, Settings, LogIn, UserCog } from 'lucide-react';
+import { Search, Upload, User, Menu, Crown, Settings, LogIn, UserCog } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,7 +13,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import ThemeToggle from './ThemeToggle';
+import VideoUploadForm from './VideoUploadForm';
 import { useAuth } from '@/hooks/useAuth';
 
 interface HeaderProps {
@@ -22,12 +30,17 @@ interface HeaderProps {
 
 const Header = ({ onToggleSidebar }: HeaderProps) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const { user, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     await signOut();
     navigate('/');
+  };
+
+  const handleUploadSuccess = () => {
+    setUploadDialogOpen(false);
   };
 
   return (
@@ -105,22 +118,23 @@ const Header = ({ onToggleSidebar }: HeaderProps) => {
                 </Button>
               )}
               
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="hover:bg-accent/20 transition-all duration-300 hidden sm:flex h-8 w-8 sm:h-10 sm:w-10"
-              >
-                <Upload className="h-4 w-4 sm:h-5 sm:w-5" />
-              </Button>
-              
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="hover:bg-accent/20 transition-all duration-300 relative h-8 w-8 sm:h-10 sm:w-10"
-              >
-                <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-red-500 rounded-full animate-pulse"></span>
-              </Button>
+              <Dialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="hover:bg-accent/20 transition-all duration-300 hidden sm:flex h-8 w-8 sm:h-10 sm:w-10"
+                  >
+                    <Upload className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Video hochladen</DialogTitle>
+                  </DialogHeader>
+                  <VideoUploadForm onUploadSuccess={handleUploadSuccess} />
+                </DialogContent>
+              </Dialog>
               
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -152,6 +166,11 @@ const Header = ({ onToggleSidebar }: HeaderProps) => {
                       <DropdownMenuSeparator className="sm:hidden" />
                     </>
                   )}
+                  <DropdownMenuItem className="cursor-pointer sm:hidden" onClick={() => setUploadDialogOpen(true)}>
+                    <Upload className="mr-2 h-4 w-4" />
+                    <span>Video hochladen</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="sm:hidden" />
                   <DropdownMenuItem className="cursor-pointer">
                     <Crown className="mr-2 h-4 w-4 text-yellow-500" />
                     <span>Premium werden</span>
