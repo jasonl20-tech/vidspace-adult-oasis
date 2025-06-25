@@ -104,7 +104,10 @@ const VideoWatch = () => {
         });
 
       // Update view count using the RPC function
-      await supabase.rpc('increment_view_count', { video_id: videoId });
+      const { error } = await supabase.rpc('increment_view_count', { video_id: videoId });
+      if (error) {
+        console.error('Error incrementing view count:', error);
+      }
     } catch (error) {
       console.error('Error recording view:', error);
     }
