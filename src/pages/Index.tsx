@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
 import VideoGrid from '@/components/VideoGrid';
+import Footer from '@/components/Footer';
 import { cn } from '@/lib/utils';
 
 const Index = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -16,21 +17,23 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header onToggleSidebar={toggleSidebar} />
       
-      <div className="flex">
+      <div className="flex relative">
         <Sidebar isOpen={sidebarOpen} />
         
         <main className={cn(
-          "flex-1 transition-all duration-300",
-          sidebarOpen ? "ml-64" : "ml-0"
+          "flex-1 transition-all duration-500 ease-in-out min-h-screen",
+          sidebarOpen ? "lg:ml-64" : "lg:ml-16",
+          "ml-0"
         )}>
           <VideoGrid />
+          <Footer />
         </main>
       </div>
 
-      {/* Overlay for mobile */}
+      {/* Mobile Overlay */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          className="fixed inset-0 bg-black/60 z-30 lg:hidden backdrop-blur-sm"
           onClick={toggleSidebar}
         />
       )}

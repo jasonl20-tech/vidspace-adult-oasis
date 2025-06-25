@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Home, TrendingUp, Clock, ThumbsUp, Bookmark, Settings, Users, Crown } from 'lucide-react';
+import { Home, TrendingUp, Clock, ThumbsUp, Bookmark, Settings, Users, Crown, Heart, Star, Zap, Camera, Video, Music, Gamepad2, Palette, Coffee } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -18,54 +18,71 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
   ];
 
   const categories = [
-    'Amateur',
-    'Premium',
-    'HD',
-    '4K',
-    'VR',
-    'Live',
-    'Compilation',
-    'Interactive'
+    { icon: Heart, label: 'Amateur', color: 'text-pink-400' },
+    { icon: Crown, label: 'Premium', color: 'text-yellow-400' },
+    { icon: Zap, label: 'HD', color: 'text-blue-400' },
+    { icon: Star, label: '4K', color: 'text-purple-400' },
+    { icon: Video, label: 'VR', color: 'text-green-400' },
+    { icon: Camera, label: 'Live', color: 'text-red-400' },
+    { icon: Users, label: 'Paare', color: 'text-orange-400' },
+    { icon: Music, label: 'ASMR', color: 'text-indigo-400' },
+    { icon: Gamepad2, label: 'Interaktiv', color: 'text-cyan-400' },
+    { icon: Palette, label: 'Anime', color: 'text-rose-400' },
+    { icon: Coffee, label: 'Fetisch', color: 'text-amber-400' },
   ];
 
   return (
     <aside
       className={cn(
-        "fixed left-0 top-16 h-[calc(100vh-4rem)] bg-sidebar border-r border-border/50 transition-all duration-300 z-40",
-        isOpen ? "w-64 translate-x-0" : "w-0 -translate-x-full"
+        "fixed left-0 top-16 h-[calc(100vh-4rem)] bg-sidebar border-r border-border/50 transition-all duration-500 z-40 glass-effect",
+        isOpen ? "w-64 translate-x-0" : "w-0 -translate-x-full lg:w-16 lg:translate-x-0"
       )}
     >
-      <div className="flex flex-col h-full p-4 overflow-y-auto">
+      <div className="flex flex-col h-full p-4 overflow-y-auto custom-scrollbar">
         <nav className="space-y-2 mb-8">
-          {menuItems.map((item) => (
+          {menuItems.map((item, index) => (
             <Button
               key={item.label}
               variant={item.active ? "secondary" : "ghost"}
               className={cn(
-                "w-full justify-start gap-3 h-11",
+                "w-full justify-start gap-3 h-11 transition-all duration-300 hover:scale-105",
                 item.active 
-                  ? "bg-accent/20 text-accent border border-accent/30" 
-                  : "hover:bg-accent/10 text-muted-foreground hover:text-foreground"
+                  ? "bg-accent/20 text-accent border border-accent/30 neon-glow" 
+                  : "hover:bg-accent/10 text-muted-foreground hover:text-foreground",
+                !isOpen && "lg:justify-center lg:px-2"
               )}
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <item.icon className="h-5 w-5" />
-              {item.label}
+              <item.icon className="h-5 w-5 flex-shrink-0" />
+              {(isOpen || window.innerWidth < 1024) && (
+                <span className="animate-fade-in">{item.label}</span>
+              )}
             </Button>
           ))}
         </nav>
 
         <div className="border-t border-border/50 pt-6">
-          <h3 className="text-sm font-semibold text-muted-foreground mb-4 px-2">
+          <h3 className={cn(
+            "text-sm font-semibold text-muted-foreground mb-4 px-2 transition-all duration-300",
+            !isOpen && "lg:hidden"
+          )}>
             KATEGORIEN
           </h3>
           <div className="space-y-1">
-            {categories.map((category) => (
+            {categories.map((category, index) => (
               <Button
-                key={category}
+                key={category.label}
                 variant="ghost"
-                className="w-full justify-start h-9 text-sm text-muted-foreground hover:text-foreground hover:bg-accent/10"
+                className={cn(
+                  "w-full justify-start h-10 text-sm text-muted-foreground hover:text-foreground hover:bg-accent/10 transition-all duration-300 hover:scale-105 group",
+                  !isOpen && "lg:justify-center lg:px-2"
+                )}
+                style={{ animationDelay: `${(index + 5) * 0.1}s` }}
               >
-                {category}
+                <category.icon className={cn("h-4 w-4 flex-shrink-0", category.color, "group-hover:animate-pulse")} />
+                {(isOpen || window.innerWidth < 1024) && (
+                  <span className="animate-fade-in ml-3">{category.label}</span>
+                )}
               </Button>
             ))}
           </div>
@@ -74,17 +91,27 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
         <div className="mt-auto pt-6 border-t border-border/50">
           <Button
             variant="ghost"
-            className="w-full justify-start gap-3 h-11 text-muted-foreground hover:text-foreground hover:bg-accent/10"
+            className={cn(
+              "w-full justify-start gap-3 h-11 text-muted-foreground hover:text-foreground hover:bg-accent/10 transition-all duration-300 hover:scale-105 group",
+              !isOpen && "lg:justify-center lg:px-2"
+            )}
           >
-            <Crown className="h-5 w-5" />
-            Premium werden
+            <Crown className="h-5 w-5 flex-shrink-0 text-yellow-500 group-hover:animate-pulse" />
+            {(isOpen || window.innerWidth < 1024) && (
+              <span className="animate-fade-in">Premium werden</span>
+            )}
           </Button>
           <Button
             variant="ghost"
-            className="w-full justify-start gap-3 h-11 text-muted-foreground hover:text-foreground hover:bg-accent/10"
+            className={cn(
+              "w-full justify-start gap-3 h-11 text-muted-foreground hover:text-foreground hover:bg-accent/10 transition-all duration-300 hover:scale-105",
+              !isOpen && "lg:justify-center lg:px-2"
+            )}
           >
-            <Settings className="h-5 w-5" />
-            Einstellungen
+            <Settings className="h-5 w-5 flex-shrink-0" />
+            {(isOpen || window.innerWidth < 1024) && (
+              <span className="animate-fade-in">Einstellungen</span>
+            )}
           </Button>
         </div>
       </div>
