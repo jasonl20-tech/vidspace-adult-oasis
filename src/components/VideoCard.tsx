@@ -1,8 +1,8 @@
-
 import React, { useState } from 'react';
 import { Play, Clock, Eye, ThumbsUp, MoreVertical, Heart, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 interface VideoCardProps {
   title: string;
