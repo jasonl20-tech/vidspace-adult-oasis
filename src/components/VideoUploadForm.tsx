@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -54,15 +53,22 @@ const VideoUploadForm = ({ onUploadSuccess }: { onUploadSuccess?: () => void }) 
   };
 
   const handleFileUpload = async (file: File) => {
-    if (!user) return null;
+    if (!user) {
+      toast.error('Sie müssen angemeldet sein, um Dateien hochzuladen');
+      return null;
+    }
 
+    console.log('Starting file upload for user:', user.id);
     setUploadingFile(true);
+    
     try {
       const fileExt = file.name.split('.').pop();
       const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
       const filePath = `${user.id}/${fileName}`;
 
       console.log('Uploading file to path:', filePath);
+      console.log('File size:', file.size, 'bytes');
+      console.log('File type:', file.type);
 
       const { data, error } = await supabase.storage
         .from('videos')
@@ -72,7 +78,7 @@ const VideoUploadForm = ({ onUploadSuccess }: { onUploadSuccess?: () => void }) 
         });
 
       if (error) {
-        console.error('Upload error:', error);
+        console.error('Upload error details:', error);
         throw error;
       }
 
@@ -82,11 +88,23 @@ const VideoUploadForm = ({ onUploadSuccess }: { onUploadSuccess?: () => void }) 
         .from('videos')
         .getPublicUrl(filePath);
 
-      console.log('Public URL:', publicUrl);
+      console.log('Public URL generated:', publicUrl);
+      toast.success('Datei erfolgreich hochgeladen!');
       return publicUrl;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error uploading file:', error);
-      toast.error('Fehler beim Hochladen der Datei');
+      
+      // More specific error messages
+      if (error.message?.includes('Row Level Security')) {
+        toast.error('Fehler: Keine Berechtigung zum Hochladen. Bitte melden Sie sich erneut an.');
+      } else if (error.message?.includes('payload too large')) {
+        toast.error('Fehler: Datei ist zu groß');
+      } else if (error.message?.includes('bucket')) {
+        toast.error('Fehler: Storage-Bucket nicht verfügbar');
+      } else {
+        toast.error(`Fehler beim Hochladen: ${error.message || 'Unbekannter Fehler'}`);
+      }
+      
       return null;
     } finally {
       setUploadingFile(false);
@@ -132,14 +150,21 @@ const VideoUploadForm = ({ onUploadSuccess }: { onUploadSuccess?: () => void }) 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
+    if (!user) {
+      toast.error('Sie müssen angemeldet sein');
+      return;
+    }
 
     let videoUrl = formData.video_url;
 
     // If file is selected, upload it first
     if (selectedFile) {
+      console.log('Uploading selected file...');
       videoUrl = await handleFileUpload(selectedFile);
-      if (!videoUrl) return;
+      if (!videoUrl) {
+        console.log('File upload failed, aborting video creation');
+        return;
+      }
     }
 
     if (!formData.title || !videoUrl || !formData.category_id) {
@@ -147,6 +172,7 @@ const VideoUploadForm = ({ onUploadSuccess }: { onUploadSuccess?: () => void }) 
       return;
     }
 
+    console.log('Creating video record with URL:', videoUrl);
     const result = await uploadVideo({
       ...formData,
       video_url: videoUrl
