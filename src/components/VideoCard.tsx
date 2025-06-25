@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { Play, Clock, Eye, ThumbsUp, MoreVertical, Heart, Share2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+
+import React from 'react';
+import { Play, Heart, Eye, Crown, Zap } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
@@ -12,124 +13,96 @@ interface VideoCardProps {
   likes: string;
   uploadDate: string;
   creator: string;
-  isHD?: boolean;
   isPremium?: boolean;
+  isHD?: boolean;
 }
 
-const VideoCard = ({
-  title,
-  thumbnail,
-  duration,
-  views,
-  likes,
-  uploadDate,
+const VideoCard = ({ 
+  title, 
+  thumbnail, 
+  duration, 
+  views, 
+  likes, 
+  uploadDate, 
   creator,
-  isHD = false,
   isPremium = false,
+  isHD = false 
 }: VideoCardProps) => {
-  const [isLiked, setIsLiked] = useState(false);
-
   return (
-    <div className="group video-card-hover cursor-pointer scale-in">
-      <div className="relative overflow-hidden rounded-xl bg-muted/20 shadow-lg">
+    <Card className="video-card-hover glass-effect border-border/30 overflow-hidden group cursor-pointer bg-card/50 backdrop-blur-sm">
+      <div className="relative aspect-video overflow-hidden">
         <img
-          src={`https://images.unsplash.com/${thumbnail}?w=400&h=225&fit=crop`}
+          src={`https://images.unsplash.com/${thumbnail}?w=600&h=400&fit=crop&crop=center`}
           alt={title}
-          className="w-full aspect-video object-cover transition-all duration-500 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
         
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="bg-white/20 backdrop-blur-sm rounded-full p-4 transform scale-0 group-hover:scale-100 transition-all duration-300 pulse-glow">
-              <Play className="h-8 w-8 text-white" fill="white" />
-            </div>
+        {/* Overlay gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        
+        {/* Play button */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="bg-red-500/90 backdrop-blur-sm rounded-full p-3 sm:p-4 transform scale-90 group-hover:scale-100 transition-transform duration-300 neon-glow">
+            <Play className="w-4 h-4 sm:w-6 sm:h-6 text-white fill-white" />
           </div>
         </div>
-
-        {/* Duration Badge */}
-        <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded-md backdrop-blur-sm">
-          {duration}
+        
+        {/* Duration badge */}
+        <div className="absolute bottom-2 right-2">
+          <Badge 
+            variant="secondary" 
+            className={cn(
+              "text-xs font-medium backdrop-blur-sm",
+              duration === "LIVE" ? "bg-red-500/90 text-white animate-pulse" : "bg-black/70 text-white"
+            )}
+          >
+            {duration}
+          </Badge>
         </div>
-
-        {/* Quality Badges */}
+        
+        {/* Premium/HD badges */}
         <div className="absolute top-2 left-2 flex gap-1">
-          {isHD && (
-            <Badge variant="secondary" className="bg-blue-500/80 text-white text-xs hover:bg-blue-600/80 transition-colors">
-              HD
-            </Badge>
-          )}
           {isPremium && (
-            <Badge variant="secondary" className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white text-xs hover:from-yellow-500 hover:to-yellow-700 transition-all">
+            <Badge className="bg-yellow-500/90 text-black text-xs backdrop-blur-sm">
+              <Crown className="w-3 h-3 mr-1" />
               Premium
             </Badge>
           )}
-        </div>
-
-        {/* Action Buttons */}
-        <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="bg-black/50 hover:bg-black/70 text-white h-8 w-8 backdrop-blur-sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsLiked(!isLiked);
-            }}
-          >
-            <Heart className={cn("h-4 w-4", isLiked && "fill-red-500 text-red-500")} />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="bg-black/50 hover:bg-black/70 text-white h-8 w-8 backdrop-blur-sm"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Share2 className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="bg-black/50 hover:bg-black/70 text-white h-8 w-8 backdrop-blur-sm"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <MoreVertical className="h-4 w-4" />
-          </Button>
+          {isHD && (
+            <Badge className="bg-blue-500/90 text-white text-xs backdrop-blur-sm">
+              <Zap className="w-3 h-3 mr-1" />
+              HD
+            </Badge>
+          )}
         </div>
       </div>
-
-      <div className="p-4 space-y-3">
-        <h3 className="font-semibold text-foreground mb-2 line-clamp-2 group-hover:text-accent transition-colors leading-tight">
+      
+      <CardContent className="p-3 sm:p-4 space-y-2 sm:space-y-3">
+        <h3 className="font-semibold text-sm sm:text-base leading-tight line-clamp-2 group-hover:text-red-400 transition-colors duration-300">
           {title}
         </h3>
         
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-red-700 rounded-full flex items-center justify-center">
-            <span className="text-white text-xs font-bold">{creator.charAt(0)}</span>
-          </div>
-          <p className="text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+        <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground">
+          <span className="hover:text-red-400 transition-colors cursor-pointer truncate mr-2">
             {creator}
-          </p>
+          </span>
+          <span className="shrink-0">{uploadDate}</span>
         </div>
         
         <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1 hover:text-foreground transition-colors">
-              <Eye className="h-3 w-3" />
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="flex items-center gap-1">
+              <Eye className="w-3 h-3" />
               <span>{views}</span>
             </div>
-            <div className="flex items-center gap-1 hover:text-red-400 transition-colors cursor-pointer">
-              <ThumbsUp className="h-3 w-3" />
+            <div className="flex items-center gap-1">
+              <Heart className="w-3 h-3" />
               <span>{likes}</span>
             </div>
           </div>
-          <div className="flex items-center gap-1">
-            <Clock className="h-3 w-3" />
-            <span>{uploadDate}</span>
-          </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

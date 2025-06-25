@@ -111,13 +111,13 @@ const VideoGrid = () => {
   const latestVideos = videos.slice(7);
 
   return (
-    <div className="p-4 lg:p-6 space-y-12">
+    <div className="p-3 sm:p-4 lg:p-6 space-y-8 sm:space-y-12">
       {/* Featured Section */}
-      <section className="space-y-6">
+      <section className="space-y-4 sm:space-y-6">
         <div className="flex items-center justify-between">
-          <div className="space-y-2">
-            <h2 className="text-2xl lg:text-3xl font-bold gradient-text">Featured Videos</h2>
-            <p className="text-muted-foreground">Die heißesten Videos, handverlesen für dich</p>
+          <div className="space-y-1 sm:space-y-2">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold gradient-text">Featured Videos</h2>
+            <p className="text-sm sm:text-base text-muted-foreground">Die heißesten Videos, handverlesen für dich</p>
           </div>
           <div className="hidden md:block">
             <div className="flex gap-2">
@@ -128,7 +128,7 @@ const VideoGrid = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
           {featuredVideos.map((video, index) => (
             <div key={`featured-${index}`} className="animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
               <VideoCard {...video} />
@@ -138,16 +138,16 @@ const VideoGrid = () => {
       </section>
 
       {/* Trending Section */}
-      <section className="space-y-6">
-        <div className="flex items-center gap-3">
-          <h2 className="text-2xl lg:text-3xl font-bold">Trending heute</h2>
+      <section className="space-y-4 sm:space-y-6">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold">Trending heute</h2>
           <div className="flex items-center gap-1">
-            <div className="w-3 h-3 bg-gradient-to-r from-red-500 to-orange-500 rounded-full"></div>
-            <span className="text-sm text-muted-foreground">Hot</span>
+            <div className="w-2 h-2 sm:w-3 sm:h-3 bg-gradient-to-r from-red-500 to-orange-500 rounded-full"></div>
+            <span className="text-xs sm:text-sm text-muted-foreground">Hot</span>
           </div>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
           {trendingVideos.map((video, index) => (
             <div key={`trending-${index}`} className="slide-in-left" style={{ animationDelay: `${index * 0.15}s` }}>
               <VideoCard {...video} />
@@ -157,15 +157,15 @@ const VideoGrid = () => {
       </section>
 
       {/* Latest Section */}
-      <section className="space-y-6">
-        <div className="flex items-center gap-3">
-          <h2 className="text-2xl lg:text-3xl font-bold">Neueste Videos</h2>
-          <div className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded-full">
+      <section className="space-y-4 sm:space-y-6">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold">Neueste Videos</h2>
+          <div className="px-2 py-0.5 sm:py-1 bg-green-500/20 text-green-400 text-xs rounded-full">
             Neu
           </div>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
           {latestVideos.map((video, index) => (
             <div key={`latest-${index}`} className="slide-in-right" style={{ animationDelay: `${index * 0.1}s` }}>
               <VideoCard {...video} />

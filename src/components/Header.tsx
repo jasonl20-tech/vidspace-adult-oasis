@@ -22,65 +22,78 @@ const Header = ({ onToggleSidebar }: HeaderProps) => {
 
   return (
     <header className="glass-effect border-b border-border/50 sticky top-0 z-50 animate-slide-in-bottom">
-      <div className="flex items-center justify-between px-4 lg:px-6 py-4">
-        <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between px-3 sm:px-4 lg:px-6 py-3 sm:py-4">
+        {/* Left side - Menu + Logo */}
+        <div className="flex items-center gap-2 sm:gap-4">
           <Button
             variant="ghost"
             size="icon"
             onClick={onToggleSidebar}
-            className="hover:bg-accent/20 transition-all duration-300 hover:scale-110"
+            className="hover:bg-accent/20 transition-all duration-300 hover:scale-110 h-8 w-8 sm:h-10 sm:w-10"
           >
-            <Menu className="h-5 w-5" />
+            <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg overflow-hidden floating-animation">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden floating-animation">
               <img 
                 src="/lovable-uploads/9fccfeee-d97b-4b0c-a483-d908ad8789e7.png" 
-                alt="VidSpace Logo" 
+                alt="Hub4Porn Logo" 
                 className="w-full h-full object-contain"
               />
             </div>
-            <h1 className="text-xl lg:text-2xl font-bold gradient-text">VidSpace</h1>
+            <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">Hub4Porn</h1>
           </div>
         </div>
 
-        <div className="flex-1 max-w-2xl mx-4 lg:mx-8">
-          <div className="relative group">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5 group-focus-within:text-primary transition-colors" />
+        {/* Center - Search (hidden on very small screens) */}
+        <div className="hidden sm:flex flex-1 max-w-lg mx-4 lg:mx-8">
+          <div className="relative group w-full">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 sm:h-5 sm:w-5 group-focus-within:text-primary transition-colors" />
             <Input
               type="text"
               placeholder="Suche nach Videos..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-muted/50 border-border/50 focus:border-primary/50 focus:ring-primary/20 transition-all duration-300 focus:bg-muted/70"
+              className="pl-8 sm:pl-10 bg-muted/50 border-border/50 focus:border-primary/50 focus:ring-primary/20 transition-all duration-300 focus:bg-muted/70 text-sm sm:text-base"
             />
           </div>
         </div>
 
-        <div className="flex items-center gap-2 lg:gap-3">
+        {/* Right side - Actions */}
+        <div className="flex items-center gap-1 sm:gap-2 lg:gap-3">
+          {/* Mobile search button */}
           <Button 
             variant="ghost" 
             size="icon" 
-            className="hover:bg-accent/20 transition-all duration-300 hover:scale-110 pulse-glow hidden sm:flex"
+            className="hover:bg-accent/20 transition-all duration-300 hover:scale-110 sm:hidden h-8 w-8"
           >
-            <Upload className="h-5 w-5" />
+            <Search className="h-4 w-4" />
           </Button>
+          
           <Button 
             variant="ghost" 
             size="icon" 
-            className="hover:bg-accent/20 transition-all duration-300 hover:scale-110 relative"
+            className="hover:bg-accent/20 transition-all duration-300 hover:scale-110 pulse-glow hidden sm:flex h-8 w-8 sm:h-10 sm:w-10"
           >
-            <Bell className="h-5 w-5" />
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+            <Upload className="h-4 w-4 sm:h-5 sm:w-5" />
+          </Button>
+          
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="hover:bg-accent/20 transition-all duration-300 hover:scale-110 relative h-8 w-8 sm:h-10 sm:w-10"
+          >
+            <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full animate-pulse"></span>
           </Button>
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-10 w-10 rounded-full hover:scale-110 transition-all duration-300">
-                <Avatar className="h-10 w-10 border-2 border-primary/30">
+              <Button variant="ghost" className="relative h-8 w-8 sm:h-10 sm:w-10 rounded-full hover:scale-110 transition-all duration-300">
+                <Avatar className="h-8 w-8 sm:h-10 sm:w-10 border-2 border-primary/30">
                   <AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" />
                   <AvatarFallback className="bg-gradient-to-br from-red-500 to-red-700 text-white">
-                    <User className="h-5 w-5" />
+                    <User className="h-4 w-4 sm:h-5 sm:w-5" />
                   </AvatarFallback>
                 </Avatar>
               </Button>
@@ -109,6 +122,20 @@ const Header = ({ onToggleSidebar }: HeaderProps) => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+        </div>
+      </div>
+
+      {/* Mobile search bar */}
+      <div className="sm:hidden px-3 pb-3">
+        <div className="relative group">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 group-focus-within:text-primary transition-colors" />
+          <Input
+            type="text"
+            placeholder="Suche nach Videos..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10 bg-muted/50 border-border/50 focus:border-primary/50 focus:ring-primary/20 transition-all duration-300 focus:bg-muted/70 text-sm"
+          />
         </div>
       </div>
     </header>
