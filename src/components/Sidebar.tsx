@@ -1,36 +1,38 @@
-
 import React from 'react';
 import { Home, TrendingUp, Clock, ThumbsUp, Bookmark, Settings, Users, Crown, Heart, Star, Zap, Camera, Video, Music, Gamepad2, Palette, Coffee } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { ContentType } from '@/hooks/useContentFilter';
 
 interface SidebarProps {
   isOpen: boolean;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
+  activeContent: ContentType;
+  onContentChange: (content: ContentType) => void;
 }
 
-const Sidebar = ({ isOpen, onMouseEnter, onMouseLeave }: SidebarProps) => {
+const Sidebar = ({ isOpen, onMouseEnter, onMouseLeave, activeContent, onContentChange }: SidebarProps) => {
   const menuItems = [
-    { icon: Home, label: 'Startseite', active: true },
-    { icon: TrendingUp, label: 'Trending' },
-    { icon: Clock, label: 'Kürzlich angesehen' },
-    { icon: ThumbsUp, label: 'Liked Videos' },
-    { icon: Bookmark, label: 'Gespeichert' },
+    { icon: Home, label: 'Startseite', key: 'home' as ContentType },
+    { icon: TrendingUp, label: 'Trending', key: 'trending' as ContentType },
+    { icon: Clock, label: 'Kürzlich angesehen', key: 'recent' as ContentType },
+    { icon: ThumbsUp, label: 'Liked Videos', key: 'liked' as ContentType },
+    { icon: Bookmark, label: 'Gespeichert', key: 'saved' as ContentType },
   ];
 
   const categories = [
-    { icon: Heart, label: 'Amateur', color: 'text-pink-400' },
-    { icon: Crown, label: 'Premium', color: 'text-yellow-400' },
-    { icon: Zap, label: 'HD', color: 'text-blue-400' },
-    { icon: Star, label: '4K', color: 'text-purple-400' },
-    { icon: Video, label: 'VR', color: 'text-green-400' },
-    { icon: Camera, label: 'Live', color: 'text-red-400' },
-    { icon: Users, label: 'Paare', color: 'text-orange-400' },
-    { icon: Music, label: 'ASMR', color: 'text-indigo-400' },
-    { icon: Gamepad2, label: 'Interaktiv', color: 'text-cyan-400' },
-    { icon: Palette, label: 'Anime', color: 'text-rose-400' },
-    { icon: Coffee, label: 'Fetisch', color: 'text-amber-400' },
+    { icon: Heart, label: 'Amateur', color: 'text-pink-400', key: 'amateur' as ContentType },
+    { icon: Crown, label: 'Premium', color: 'text-yellow-400', key: 'premium' as ContentType },
+    { icon: Zap, label: 'HD', color: 'text-blue-400', key: 'hd' as ContentType },
+    { icon: Star, label: '4K', color: 'text-purple-400', key: '4k' as ContentType },
+    { icon: Video, label: 'VR', color: 'text-green-400', key: 'vr' as ContentType },
+    { icon: Camera, label: 'Live', color: 'text-red-400', key: 'live' as ContentType },
+    { icon: Users, label: 'Paare', color: 'text-orange-400', key: 'couples' as ContentType },
+    { icon: Music, label: 'ASMR', color: 'text-indigo-400', key: 'asmr' as ContentType },
+    { icon: Gamepad2, label: 'Interaktiv', color: 'text-cyan-400', key: 'interactive' as ContentType },
+    { icon: Palette, label: 'Anime', color: 'text-rose-400', key: 'anime' as ContentType },
+    { icon: Coffee, label: 'Fetisch', color: 'text-amber-400', key: 'fetish' as ContentType },
   ];
 
   return (
@@ -50,10 +52,11 @@ const Sidebar = ({ isOpen, onMouseEnter, onMouseLeave }: SidebarProps) => {
           {menuItems.map((item, index) => (
             <Button
               key={item.label}
-              variant={item.active ? "secondary" : "ghost"}
+              variant={activeContent === item.key ? "secondary" : "ghost"}
+              onClick={() => onContentChange(item.key)}
               className={cn(
-                "w-full justify-start gap-3 h-11 transition-all duration-300 hover:scale-105",
-                item.active 
+                "w-full justify-start gap-3 h-11 transition-all duration-300 hover:scale-105 cursor-pointer",
+                activeContent === item.key
                   ? "bg-accent/20 text-accent border border-accent/30 neon-glow" 
                   : "hover:bg-accent/10 text-muted-foreground hover:text-foreground",
                 !isOpen && "lg:justify-center lg:px-2"
@@ -62,10 +65,10 @@ const Sidebar = ({ isOpen, onMouseEnter, onMouseLeave }: SidebarProps) => {
             >
               <item.icon className="h-5 w-5 flex-shrink-0" />
               {isOpen && (
-                <span className="animate-fade-in text-foreground font-medium">{item.label}</span>
+                <span className="animate-fade-in text-foreground font-bold">{item.label}</span>
               )}
               {!isOpen && (
-                <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap text-foreground font-medium">
+                <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap text-foreground font-bold">
                   {item.label}
                 </span>
               )}
@@ -85,8 +88,10 @@ const Sidebar = ({ isOpen, onMouseEnter, onMouseLeave }: SidebarProps) => {
               <Button
                 key={category.label}
                 variant="ghost"
+                onClick={() => onContentChange(category.key)}
                 className={cn(
-                  "w-full justify-start h-10 text-sm hover:bg-accent/10 transition-all duration-300 hover:scale-105 group text-foreground",
+                  "w-full justify-start h-10 text-sm hover:bg-accent/10 transition-all duration-300 hover:scale-105 group text-foreground cursor-pointer",
+                  activeContent === category.key && "bg-accent/10",
                   !isOpen && "lg:justify-center lg:px-2"
                 )}
                 style={{ animationDelay: `${(index + 5) * 0.1}s` }}

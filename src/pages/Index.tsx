@@ -3,15 +3,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
-import VideoGrid from '@/components/VideoGrid';
+import ContentDisplay from '@/components/ContentDisplay';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/hooks/useAuth';
+import { useContentFilter } from '@/hooks/useContentFilter';
 import { cn } from '@/lib/utils';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarHovered, setSidebarHovered] = useState(false);
   const { user, isAdmin } = useAuth();
+  const { activeContent, setContent } = useContentFilter();
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -37,6 +39,8 @@ const Index = () => {
           isOpen={isSidebarExpanded} 
           onMouseEnter={handleSidebarMouseEnter}
           onMouseLeave={handleSidebarMouseLeave}
+          activeContent={activeContent}
+          onContentChange={setContent}
         />
         
         <main className={cn(
@@ -44,7 +48,9 @@ const Index = () => {
           isSidebarExpanded ? "lg:ml-64" : "lg:ml-16",
           "ml-0"
         )}>
-          <VideoGrid />
+          <div className="p-4 sm:p-6">
+            <ContentDisplay activeContent={activeContent} />
+          </div>
           <Footer />
         </main>
       </div>
