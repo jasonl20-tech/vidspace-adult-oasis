@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -150,21 +151,39 @@ const AdminPanel = () => {
     <div className="min-h-screen bg-background">
       <AdminHeader />
       
-      <div className="container mx-auto px-4 py-6">
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-8">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="videos">Videos</TabsTrigger>
-            <TabsTrigger value="users">Users</TabsTrigger>
-            <TabsTrigger value="categories">Categories</TabsTrigger>
-            <TabsTrigger value="upload">Upload</TabsTrigger>
-            <TabsTrigger value="api-upload">API Upload</TabsTrigger>
-            <TabsTrigger value="api-keys">API Keys</TabsTrigger>
-            <TabsTrigger value="api-docs">API Docs</TabsTrigger>
-          </TabsList>
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <Tabs defaultValue="overview" className="space-y-8">
+          <div className="bg-card rounded-lg p-1 shadow-sm">
+            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 h-auto">
+              <TabsTrigger value="overview" className="text-xs lg:text-sm py-3">
+                Overview
+              </TabsTrigger>
+              <TabsTrigger value="videos" className="text-xs lg:text-sm py-3">
+                Videos
+              </TabsTrigger>
+              <TabsTrigger value="users" className="text-xs lg:text-sm py-3">
+                Users
+              </TabsTrigger>
+              <TabsTrigger value="categories" className="text-xs lg:text-sm py-3">
+                Categories
+              </TabsTrigger>
+              <TabsTrigger value="upload" className="text-xs lg:text-sm py-3">
+                Upload
+              </TabsTrigger>
+              <TabsTrigger value="api-upload" className="text-xs lg:text-sm py-3">
+                API Upload
+              </TabsTrigger>
+              <TabsTrigger value="api-keys" className="text-xs lg:text-sm py-3">
+                API Keys
+              </TabsTrigger>
+              <TabsTrigger value="api-docs" className="text-xs lg:text-sm py-3">
+                API Docs
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <TabsContent value="overview" className="space-y-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <Card className="glass-effect">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Total Videos</CardTitle>
@@ -216,28 +235,31 @@ const AdminPanel = () => {
                 <CardDescription>Manage all videos on your platform</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className="space-y-4 max-h-[600px] overflow-y-auto">
                   {videos.map((video) => (
-                    <div key={video.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex-1">
-                        <h3 className="font-medium">{video.title}</h3>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Badge variant="outline">
+                    <div key={video.id} className="flex flex-col lg:flex-row items-start lg:items-center justify-between p-4 border rounded-lg gap-4">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium truncate">{video.title}</h3>
+                        <div className="flex flex-wrap items-center gap-2 mt-2">
+                          <Badge variant="outline" className="text-xs">
                             <Eye className="h-3 w-3 mr-1" />
                             {video.view_count} views
                           </Badge>
                           {video.is_premium && (
-                            <Badge className="bg-yellow-500/20 text-yellow-500">
+                            <Badge className="bg-yellow-500/20 text-yellow-500 text-xs">
                               <Crown className="h-3 w-3 mr-1" />
                               Premium
                             </Badge>
                           )}
                           {video.categories && (
-                            <Badge style={{ backgroundColor: `${video.categories.color}20`, color: video.categories.color }}>
+                            <Badge 
+                              style={{ backgroundColor: `${video.categories.color}20`, color: video.categories.color }}
+                              className="text-xs"
+                            >
                               {video.categories.name}
                             </Badge>
                           )}
-                          <Badge variant={video.is_active ? "default" : "secondary"}>
+                          <Badge variant={video.is_active ? "default" : "secondary"} className="text-xs">
                             {video.is_active ? "Active" : "Inactive"}
                           </Badge>
                           {video.slug && (
@@ -247,7 +269,7 @@ const AdminPanel = () => {
                           )}
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-shrink-0">
                         <Button
                           variant="outline"
                           size="sm"
@@ -290,17 +312,17 @@ const AdminPanel = () => {
                 <CardDescription>Manage user accounts and permissions</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className="space-y-4 max-h-[600px] overflow-y-auto">
                   {users.map((user) => (
-                    <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex-1">
-                        <h3 className="font-medium">{user.email}</h3>
-                        <div className="flex items-center gap-2 mt-1">
+                    <div key={user.id} className="flex flex-col lg:flex-row items-start lg:items-center justify-between p-4 border rounded-lg gap-4">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium truncate">{user.email}</h3>
+                        <div className="flex flex-wrap items-center gap-2 mt-1">
                           {user.is_admin && (
-                            <Badge variant="destructive">Admin</Badge>
+                            <Badge variant="destructive" className="text-xs">Admin</Badge>
                           )}
                           {user.is_premium && (
-                            <Badge className="bg-yellow-500/20 text-yellow-500">
+                            <Badge className="bg-yellow-500/20 text-yellow-500 text-xs">
                               <Crown className="h-3 w-3 mr-1" />
                               Premium
                             </Badge>
@@ -310,7 +332,7 @@ const AdminPanel = () => {
                           </span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-4 flex-shrink-0">
                         <div className="flex items-center gap-2">
                           <span className="text-sm">Premium</span>
                           <Switch
