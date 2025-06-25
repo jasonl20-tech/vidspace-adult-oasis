@@ -111,7 +111,7 @@ const VideoWatch = () => {
   };
 
   const addComment = async () => {
-    if (!user || !newComment.trim()) return;
+    if (!user || !newComment.trim() || !id) return;
 
     try {
       const { error } = await supabase
@@ -125,7 +125,7 @@ const VideoWatch = () => {
       if (error) throw error;
 
       setNewComment('');
-      fetchComments(id!);
+      fetchComments(id);
       toast.success('Comment added!');
     } catch (error) {
       console.error('Error adding comment:', error);
