@@ -18,26 +18,26 @@ const Index = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
-  const handleMouseEnter = () => {
+  const handleSidebarMouseEnter = () => {
     setSidebarHovered(true);
   };
 
-  const handleMouseLeave = () => {
+  const handleSidebarMouseLeave = () => {
     setSidebarHovered(false);
   };
 
   const isSidebarExpanded = sidebarOpen || sidebarHovered;
 
   return (
-    <div 
-      className="min-h-screen bg-background w-full overflow-x-hidden"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <div className="min-h-screen bg-background w-full overflow-x-hidden">
       <Header onToggleSidebar={toggleSidebar} />
       
       <div className="flex relative w-full">
-        <Sidebar isOpen={isSidebarExpanded} />
+        <Sidebar 
+          isOpen={isSidebarExpanded} 
+          onMouseEnter={handleSidebarMouseEnter}
+          onMouseLeave={handleSidebarMouseLeave}
+        />
         
         <main className={cn(
           "flex-1 transition-all duration-500 ease-in-out min-h-screen w-full",

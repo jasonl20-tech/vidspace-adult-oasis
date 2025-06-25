@@ -6,9 +6,11 @@ import { cn } from '@/lib/utils';
 
 interface SidebarProps {
   isOpen: boolean;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
 }
 
-const Sidebar = ({ isOpen }: SidebarProps) => {
+const Sidebar = ({ isOpen, onMouseEnter, onMouseLeave }: SidebarProps) => {
   const menuItems = [
     { icon: Home, label: 'Startseite', active: true },
     { icon: TrendingUp, label: 'Trending' },
@@ -37,6 +39,8 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
         "fixed left-0 top-16 h-[calc(100vh-4rem)] bg-sidebar border-r border-border/50 transition-all duration-500 z-30 glass-effect",
         isOpen ? "w-64 translate-x-0" : "w-0 -translate-x-full lg:w-16 lg:translate-x-0"
       )}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <div className={cn(
         "flex flex-col h-full p-4 overflow-y-auto custom-scrollbar transition-opacity duration-300",
@@ -58,10 +62,10 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
             >
               <item.icon className="h-5 w-5 flex-shrink-0" />
               {isOpen && (
-                <span className="animate-fade-in">{item.label}</span>
+                <span className="animate-fade-in text-foreground font-medium">{item.label}</span>
               )}
               {!isOpen && (
-                <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap">
+                <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap text-foreground font-medium">
                   {item.label}
                 </span>
               )}
@@ -89,10 +93,10 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
               >
                 <category.icon className={cn("h-4 w-4 flex-shrink-0", category.color, "group-hover:animate-pulse")} />
                 {isOpen && (
-                  <span className="animate-fade-in ml-3 text-foreground font-medium">{category.label}</span>
+                  <span className="animate-fade-in ml-3 text-foreground font-bold">{category.label}</span>
                 )}
                 {!isOpen && (
-                  <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap text-foreground font-medium">
+                  <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap text-foreground font-bold">
                     {category.label}
                   </span>
                 )}
@@ -111,10 +115,10 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
           >
             <Crown className="h-5 w-5 flex-shrink-0 text-yellow-500 group-hover:animate-pulse" />
             {isOpen && (
-              <span className="animate-fade-in font-medium">Premium werden</span>
+              <span className="animate-fade-in font-bold">Premium werden</span>
             )}
             {!isOpen && (
-              <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap font-medium">
+              <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap font-bold">
                 Premium werden
               </span>
             )}
@@ -128,10 +132,10 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
           >
             <Settings className="h-5 w-5 flex-shrink-0" />
             {isOpen && (
-              <span className="animate-fade-in font-medium">Einstellungen</span>
+              <span className="animate-fade-in font-bold">Einstellungen</span>
             )}
             {!isOpen && (
-              <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap font-medium">
+              <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap font-bold">
                 Einstellungen
               </span>
             )}
