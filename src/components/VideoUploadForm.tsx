@@ -60,18 +60,29 @@ const VideoUploadForm = ({ onUploadSuccess }: { onUploadSuccess?: () => void }) 
     try {
       const fileExt = file.name.split('.').pop();
       const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
-      const filePath = `videos/${user.id}/${fileName}`;
+      const filePath = `${user.id}/${fileName}`;
+
+      console.log('Uploading file to path:', filePath);
 
       const { data, error } = await supabase.storage
         .from('videos')
-        .upload(filePath, file);
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Upload error:', error);
+        throw error;
+      }
+
+      console.log('Upload successful:', data);
 
       const { data: { publicUrl } } = supabase.storage
         .from('videos')
         .getPublicUrl(filePath);
 
+      console.log('Public URL:', publicUrl);
       return publicUrl;
     } catch (error) {
       console.error('Error uploading file:', error);
@@ -92,10 +103,10 @@ const VideoUploadForm = ({ onUploadSuccess }: { onUploadSuccess?: () => void }) 
       return;
     }
 
-    // Check file size (50MB limit)
-    const maxSize = 50 * 1024 * 1024; // 50MB in bytes
+    // Check file size (100MB limit)
+    const maxSize = 100 * 1024 * 1024; // 100MB in bytes
     if (file.size > maxSize) {
-      toast.error('Die Datei ist zu groß. Maximum: 50MB');
+      toast.error('Die Datei ist zu groß. Maximum: 100MB');
       return;
     }
 
@@ -203,7 +214,7 @@ const VideoUploadForm = ({ onUploadSuccess }: { onUploadSuccess?: () => void }) 
                           {selectedFile ? selectedFile.name : 'Videodatei auswählen'}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          MP4, AVI, MOV, WMV (max. 50MB)
+                          MP4, AVI, MOV, WMV (max. 100MB)
                         </p>
                       </div>
                     </div>
