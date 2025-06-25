@@ -3,73 +3,15 @@ import React from 'react';
 import VideoCard from './VideoCard';
 import VideoCardSkeleton from './VideoCardSkeleton';
 import { ContentType } from '@/hooks/useContentFilter';
+import { useVideos } from '@/hooks/useVideos';
+import { formatDuration, formatViewCount, formatTimeAgo } from '@/utils/formatters';
 
 interface VideoGridProps {
   filter?: ContentType;
 }
 
 const VideoGrid = ({ filter = 'home' }: VideoGridProps) => {
-  // Simuliere verschiedene Inhalte basierend auf dem Filter
-  const getFilteredVideos = () => {
-    const baseVideos = [
-      {
-        id: '1',
-        title: 'Amazing Content 1',
-        thumbnail: '/placeholder.svg',
-        duration: '12:34',
-        views: '1.2M',
-        likes: '85K',
-        uploadDate: '2 days ago',
-        creator: 'Creator One',
-      },
-      {
-        id: '2',
-        title: 'Another Great Video',
-        thumbnail: '/placeholder.svg',
-        duration: '8:22',
-        views: '950K',
-        likes: '62K',
-        uploadDate: '1 week ago',
-        creator: 'Creator Two',
-      },
-      {
-        id: '3',
-        title: 'The Best Video Ever',
-        thumbnail: '/placeholder.svg',
-        duration: '15:48',
-        views: '2.1M',
-        likes: '120K',
-        uploadDate: '3 weeks ago',
-        creator: 'Creator Three',
-      },
-      {
-        id: '4',
-        title: 'Incredible Content Here',
-        thumbnail: '/placeholder.svg',
-        duration: '10:15',
-        views: '780K',
-        likes: '45K',
-        uploadDate: '1 month ago',
-        creator: 'Creator Four',
-      },
-      {
-        id: '5',
-        title: 'Must Watch Video',
-        thumbnail: '/placeholder.svg',
-        duration: '6:52',
-        views: '1.5M',
-        likes: '95K',
-        uploadDate: '2 months ago',
-        creator: 'Creator Five',
-      },
-    ];
-
-    // Hier könntest du später echte Filterlogik implementieren
-    return baseVideos;
-  };
-
-  const videos = getFilteredVideos();
-  const isLoading = false; // Hier könntest du später echte Loading-States verwenden
+  const { videos, isLoading, error } = useVideos(filter);
 
   if (isLoading) {
     return (
@@ -81,10 +23,47 @@ const VideoGrid = ({ filter = 'home' }: VideoGridProps) => {
     );
   }
 
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <p className="text-red-500 mb-2">Error loading videos</p>
+          <p className="text-muted-foreground">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (videos.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <p className="text-muted-foreground mb-2">No videos found</p>
+          <p className="text-sm text-muted-foreground">
+            Videos uploaded through the admin panel will appear here.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
       {videos.map((video) => (
-        <VideoCard key={video.id} {...video} />
+        <VideoCard
+          key={video.id}
+          id={video.id}
+          slug={video.slug}
+          title={video.title}
+          thumbnail={video.thumbnail_url || '/placeholder.svg'}
+          duration={formatDuration(video.duration)}
+          views={formatViewCount(video.view_count)}
+          likes={formatViewCount(video.like_count)}
+          uploadDate={formatTimeAgo(video.created_at)}
+          creator={video.profiles?.username || 'Unknown'}
+          isPremium={video.is_premium || false}
+          videoUrl={video.video_url}
+        />
       ))}
     </div>
   );
