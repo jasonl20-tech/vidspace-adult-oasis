@@ -5,14 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { supabase } from '@/integrations/supabase/client';
-import { Upload, Users, Video, Settings, Crown, Trash2, Edit, Eye } from 'lucide-react';
+import { Users, Video, Settings, Crown, Trash2, Eye } from 'lucide-react';
 import { toast } from 'sonner';
+import VideoUploadForm from '@/components/VideoUploadForm';
 
 const AdminPanel = () => {
   const { user, isAdmin, loading } = useAuth();
@@ -353,21 +351,7 @@ const AdminPanel = () => {
           </TabsContent>
 
           <TabsContent value="upload" className="space-y-6">
-            <Card className="glass-effect">
-              <CardHeader>
-                <CardTitle>Upload Video</CardTitle>
-                <CardDescription>Add new content to your platform</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12">
-                  <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-medium mb-2">Video Upload Coming Soon</h3>
-                  <p className="text-muted-foreground">
-                    File upload functionality will be implemented in the next update.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            <VideoUploadForm onUploadSuccess={fetchVideos} />
           </TabsContent>
         </Tabs>
       </div>

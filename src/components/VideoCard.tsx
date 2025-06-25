@@ -1,11 +1,13 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Play, Heart, Eye, Crown, Zap } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
 interface VideoCardProps {
+  id?: string;
   title: string;
   thumbnail: string;
   duration: string;
@@ -18,6 +20,7 @@ interface VideoCardProps {
 }
 
 const VideoCard = ({ 
+  id,
   title, 
   thumbnail, 
   duration, 
@@ -28,8 +31,19 @@ const VideoCard = ({
   isPremium = false,
   isHD = false 
 }: VideoCardProps) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (id) {
+      navigate(`/watch/${id}`);
+    }
+  };
+
   return (
-    <Card className="video-card-hover glass-effect border-border/30 overflow-hidden group cursor-pointer bg-card/50 backdrop-blur-sm w-full">
+    <Card 
+      className="video-card-hover glass-effect border-border/30 overflow-hidden group cursor-pointer bg-card/50 backdrop-blur-sm w-full transition-transform hover:scale-105"
+      onClick={handleClick}
+    >
       <div className="relative aspect-video overflow-hidden">
         <img
           src={`https://images.unsplash.com/${thumbnail}?w=600&h=400&fit=crop&crop=center`}

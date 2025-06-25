@@ -23,12 +23,12 @@ const Index = () => {
     <div className="min-h-screen bg-background w-full overflow-x-hidden">
       <Header onToggleSidebar={toggleSidebar} />
       
-      {/* Auth buttons in top right */}
-      <div className="fixed top-4 right-4 z-50 flex gap-2">
+      {/* Auth buttons in top right with proper z-index */}
+      <div className="fixed top-4 right-4 z-[60] flex gap-2">
         {!user ? (
           <Button 
             onClick={() => navigate('/auth')}
-            className="neon-glow"
+            className="neon-glow shadow-lg"
           >
             <LogIn className="mr-2 h-4 w-4" />
             Login
@@ -39,7 +39,7 @@ const Index = () => {
               <Button 
                 onClick={() => navigate('/admin')}
                 variant="outline"
-                className="glass-effect"
+                className="glass-effect shadow-lg"
               >
                 <UserCog className="mr-2 h-4 w-4" />
                 Admin
