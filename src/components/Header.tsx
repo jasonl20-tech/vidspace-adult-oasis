@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-import { Search, Upload, User, Bell, Menu, Crown, Settings } from 'lucide-react';
+import { Search, Upload, User, Bell, Menu, Crown, Settings, LogIn, UserCog } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -13,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import ThemeToggle from './ThemeToggle';
+import { useAuth } from '@/hooks/useAuth';
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -20,6 +22,13 @@ interface HeaderProps {
 
 const Header = ({ onToggleSidebar }: HeaderProps) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const { user, isAdmin, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await signOut();
+    navigate('/');
+  };
 
   return (
     <header className="glass-effect border-b border-border/50 sticky top-0 z-50">
@@ -73,58 +82,92 @@ const Header = ({ onToggleSidebar }: HeaderProps) => {
           
           <ThemeToggle />
           
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="hover:bg-accent/20 transition-all duration-300 hidden sm:flex h-8 w-8 sm:h-10 sm:w-10"
-          >
-            <Upload className="h-4 w-4 sm:h-5 sm:w-5" />
-          </Button>
-          
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="hover:bg-accent/20 transition-all duration-300 relative h-8 w-8 sm:h-10 sm:w-10"
-          >
-            <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
-            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-red-500 rounded-full animate-pulse"></span>
-          </Button>
-          
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 sm:h-10 sm:w-10 rounded-full hover:scale-110 transition-all duration-300">
-                <Avatar className="h-8 w-8 sm:h-10 sm:w-10 border-2 border-primary/30">
-                  <AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile" />
-                  <AvatarFallback className="bg-gradient-to-br from-red-500 to-red-700 text-white">
-                    <User className="h-3 w-3 sm:h-4 sm:w-4" />
-                  </AvatarFallback>
-                </Avatar>
+          {!user ? (
+            <Button 
+              onClick={() => navigate('/auth')}
+              className="neon-glow shadow-lg ml-2"
+              size="sm"
+            >
+              <LogIn className="mr-2 h-4 w-4" />
+              <span className="hidden sm:inline">Login</span>
+            </Button>
+          ) : (
+            <>
+              {isAdmin && (
+                <Button 
+                  onClick={() => navigate('/admin')}
+                  variant="outline"
+                  className="glass-effect shadow-lg hidden sm:flex"
+                  size="sm"
+                >
+                  <UserCog className="mr-2 h-4 w-4" />
+                  <span className="hidden lg:inline">Admin</span>
+                </Button>
+              )}
+              
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="hover:bg-accent/20 transition-all duration-300 hidden sm:flex h-8 w-8 sm:h-10 sm:w-10"
+              >
+                <Upload className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 glass-effect border-border/50 bg-background z-50" align="end" forceMount>
-              <DropdownMenuLabel className="font-normal">
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">MaxMustermann</p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    max@example.com
-                  </p>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">
-                <Crown className="mr-2 h-4 w-4 text-yellow-500" />
-                <span>Premium werden</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Einstellungen</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer text-red-500 focus:text-red-500">
-                <span>Abmelden</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="hover:bg-accent/20 transition-all duration-300 relative h-8 w-8 sm:h-10 sm:w-10"
+              >
+                <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-red-500 rounded-full animate-pulse"></span>
+              </Button>
+              
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-8 w-8 sm:h-10 sm:w-10 rounded-full hover:scale-110 transition-all duration-300">
+                    <Avatar className="h-8 w-8 sm:h-10 sm:w-10 border-2 border-primary/30">
+                      <AvatarImage src={user?.user_metadata?.avatar_url} alt="Profile" />
+                      <AvatarFallback className="bg-gradient-to-br from-red-500 to-red-700 text-white">
+                        <User className="h-3 w-3 sm:h-4 sm:w-4" />
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56 glass-effect border-border/50 bg-background z-50" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{user?.email?.split('@')[0] || 'User'}</p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {user?.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {isAdmin && (
+                    <>
+                      <DropdownMenuItem className="cursor-pointer sm:hidden" onClick={() => navigate('/admin')}>
+                        <UserCog className="mr-2 h-4 w-4" />
+                        <span>Admin Panel</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator className="sm:hidden" />
+                    </>
+                  )}
+                  <DropdownMenuItem className="cursor-pointer">
+                    <Crown className="mr-2 h-4 w-4 text-yellow-500" />
+                    <span>Premium werden</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Einstellungen</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="cursor-pointer text-red-500 focus:text-red-500" onClick={handleLogout}>
+                    <span>Abmelden</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          )}
         </div>
       </div>
 

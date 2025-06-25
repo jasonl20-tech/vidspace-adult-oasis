@@ -57,10 +57,10 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <item.icon className="h-5 w-5 flex-shrink-0" />
-              {(isOpen) && (
-                <span className="animate-fade-in lg:hidden lg:group-hover:block">{item.label}</span>
+              {isOpen && (
+                <span className="animate-fade-in">{item.label}</span>
               )}
-              {(!isOpen) && (
+              {!isOpen && (
                 <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap">
                   {item.label}
                 </span>
@@ -71,7 +71,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
 
         <div className="border-t border-border/50 pt-6">
           <h3 className={cn(
-            "text-sm font-semibold text-muted-foreground mb-4 px-2 transition-all duration-300",
+            "text-sm font-semibold text-foreground mb-4 px-2 transition-all duration-300",
             !isOpen && "lg:hidden"
           )}>
             KATEGORIEN
@@ -82,17 +82,17 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                 key={category.label}
                 variant="ghost"
                 className={cn(
-                  "w-full justify-start h-10 text-sm text-muted-foreground hover:text-foreground hover:bg-accent/10 transition-all duration-300 hover:scale-105 group",
+                  "w-full justify-start h-10 text-sm hover:bg-accent/10 transition-all duration-300 hover:scale-105 group text-foreground",
                   !isOpen && "lg:justify-center lg:px-2"
                 )}
                 style={{ animationDelay: `${(index + 5) * 0.1}s` }}
               >
                 <category.icon className={cn("h-4 w-4 flex-shrink-0", category.color, "group-hover:animate-pulse")} />
-                {(isOpen) && (
-                  <span className="animate-fade-in ml-3 lg:hidden lg:group-hover:block">{category.label}</span>
+                {isOpen && (
+                  <span className="animate-fade-in ml-3 text-foreground font-medium">{category.label}</span>
                 )}
-                {(!isOpen) && (
-                  <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap">
+                {!isOpen && (
+                  <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap text-foreground font-medium">
                     {category.label}
                   </span>
                 )}
@@ -105,16 +105,16 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
           <Button
             variant="ghost"
             className={cn(
-              "w-full justify-start gap-3 h-11 text-muted-foreground hover:text-foreground hover:bg-accent/10 transition-all duration-300 hover:scale-105 group",
+              "w-full justify-start gap-3 h-11 text-foreground hover:text-foreground hover:bg-accent/10 transition-all duration-300 hover:scale-105 group",
               !isOpen && "lg:justify-center lg:px-2"
             )}
           >
             <Crown className="h-5 w-5 flex-shrink-0 text-yellow-500 group-hover:animate-pulse" />
-            {(isOpen) && (
-              <span className="animate-fade-in">Premium werden</span>
+            {isOpen && (
+              <span className="animate-fade-in font-medium">Premium werden</span>
             )}
-            {(!isOpen) && (
-              <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap">
+            {!isOpen && (
+              <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap font-medium">
                 Premium werden
               </span>
             )}
@@ -122,16 +122,16 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
           <Button
             variant="ghost"
             className={cn(
-              "w-full justify-start gap-3 h-11 text-muted-foreground hover:text-foreground hover:bg-accent/10 transition-all duration-300 hover:scale-105 group",
+              "w-full justify-start gap-3 h-11 text-foreground hover:text-foreground hover:bg-accent/10 transition-all duration-300 hover:scale-105 group",
               !isOpen && "lg:justify-center lg:px-2"
             )}
           >
             <Settings className="h-5 w-5 flex-shrink-0" />
-            {(isOpen) && (
-              <span className="animate-fade-in">Einstellungen</span>
+            {isOpen && (
+              <span className="animate-fade-in font-medium">Einstellungen</span>
             )}
-            {(!isOpen) && (
-              <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap">
+            {!isOpen && (
+              <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap font-medium">
                 Einstellungen
               </span>
             )}

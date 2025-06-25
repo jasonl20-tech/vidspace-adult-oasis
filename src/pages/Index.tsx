@@ -6,12 +6,11 @@ import Sidebar from '@/components/Sidebar';
 import VideoGrid from '@/components/VideoGrid';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/hooks/useAuth';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { LogIn, UserCog } from 'lucide-react';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarHovered, setSidebarHovered] = useState(false);
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
 
@@ -19,42 +18,30 @@ const Index = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
+  const handleMouseEnter = () => {
+    setSidebarHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setSidebarHovered(false);
+  };
+
+  const isSidebarExpanded = sidebarOpen || sidebarHovered;
+
   return (
-    <div className="min-h-screen bg-background w-full overflow-x-hidden">
+    <div 
+      className="min-h-screen bg-background w-full overflow-x-hidden"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <Header onToggleSidebar={toggleSidebar} />
       
-      {/* Auth buttons in top right with proper z-index */}
-      <div className="fixed top-4 right-4 z-[60] flex gap-2">
-        {!user ? (
-          <Button 
-            onClick={() => navigate('/auth')}
-            className="neon-glow shadow-lg"
-          >
-            <LogIn className="mr-2 h-4 w-4" />
-            Login
-          </Button>
-        ) : (
-          <>
-            {isAdmin && (
-              <Button 
-                onClick={() => navigate('/admin')}
-                variant="outline"
-                className="glass-effect shadow-lg"
-              >
-                <UserCog className="mr-2 h-4 w-4" />
-                Admin
-              </Button>
-            )}
-          </>
-        )}
-      </div>
-      
       <div className="flex relative w-full">
-        <Sidebar isOpen={sidebarOpen} />
+        <Sidebar isOpen={isSidebarExpanded} />
         
         <main className={cn(
           "flex-1 transition-all duration-500 ease-in-out min-h-screen w-full",
-          sidebarOpen ? "lg:ml-64" : "lg:ml-16",
+          isSidebarExpanded ? "lg:ml-64" : "lg:ml-16",
           "ml-0"
         )}>
           <VideoGrid />
