@@ -30,10 +30,10 @@ const Index = () => {
         </main>
       </div>
 
-      {/* Mobile Overlay */}
+      {/* Mobile Overlay - Fixed positioning */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black/60 z-30 lg:hidden backdrop-blur-sm"
+          className="fixed inset-0 bg-black/60 z-20 lg:hidden backdrop-blur-sm"
           onClick={toggleSidebar}
         />
       )}

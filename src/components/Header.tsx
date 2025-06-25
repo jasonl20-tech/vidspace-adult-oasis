@@ -32,9 +32,13 @@ const Header = ({ onToggleSidebar }: HeaderProps) => {
           >
             <Menu className="h-5 w-5" />
           </Button>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-red-700 rounded-lg flex items-center justify-center floating-animation">
-              <span className="text-white font-bold text-sm">V</span>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg overflow-hidden floating-animation">
+              <img 
+                src="/lovable-uploads/9fccfeee-d97b-4b0c-a483-d908ad8789e7.png" 
+                alt="VidSpace Logo" 
+                className="w-full h-full object-contain"
+              />
             </div>
             <h1 className="text-xl lg:text-2xl font-bold gradient-text">VidSpace</h1>
           </div>

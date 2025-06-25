@@ -34,11 +34,14 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
   return (
     <aside
       className={cn(
-        "fixed left-0 top-16 h-[calc(100vh-4rem)] bg-sidebar border-r border-border/50 transition-all duration-500 z-40 glass-effect",
+        "fixed left-0 top-16 h-[calc(100vh-4rem)] bg-sidebar border-r border-border/50 transition-all duration-500 z-30 glass-effect",
         isOpen ? "w-64 translate-x-0" : "w-0 -translate-x-full lg:w-16 lg:translate-x-0"
       )}
     >
-      <div className="flex flex-col h-full p-4 overflow-y-auto custom-scrollbar">
+      <div className={cn(
+        "flex flex-col h-full p-4 overflow-y-auto custom-scrollbar transition-opacity duration-300",
+        isOpen ? "opacity-100" : "opacity-0 lg:opacity-100"
+      )}>
         <nav className="space-y-2 mb-8">
           {menuItems.map((item, index) => (
             <Button
@@ -54,8 +57,13 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <item.icon className="h-5 w-5 flex-shrink-0" />
-              {(isOpen || window.innerWidth < 1024) && (
-                <span className="animate-fade-in">{item.label}</span>
+              {(isOpen) && (
+                <span className="animate-fade-in lg:hidden lg:group-hover:block">{item.label}</span>
+              )}
+              {(!isOpen) && (
+                <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap">
+                  {item.label}
+                </span>
               )}
             </Button>
           ))}
@@ -80,8 +88,13 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                 style={{ animationDelay: `${(index + 5) * 0.1}s` }}
               >
                 <category.icon className={cn("h-4 w-4 flex-shrink-0", category.color, "group-hover:animate-pulse")} />
-                {(isOpen || window.innerWidth < 1024) && (
-                  <span className="animate-fade-in ml-3">{category.label}</span>
+                {(isOpen) && (
+                  <span className="animate-fade-in ml-3 lg:hidden lg:group-hover:block">{category.label}</span>
+                )}
+                {(!isOpen) && (
+                  <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap">
+                    {category.label}
+                  </span>
                 )}
               </Button>
             ))}
@@ -97,20 +110,30 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
             )}
           >
             <Crown className="h-5 w-5 flex-shrink-0 text-yellow-500 group-hover:animate-pulse" />
-            {(isOpen || window.innerWidth < 1024) && (
+            {(isOpen) && (
               <span className="animate-fade-in">Premium werden</span>
+            )}
+            {(!isOpen) && (
+              <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap">
+                Premium werden
+              </span>
             )}
           </Button>
           <Button
             variant="ghost"
             className={cn(
-              "w-full justify-start gap-3 h-11 text-muted-foreground hover:text-foreground hover:bg-accent/10 transition-all duration-300 hover:scale-105",
+              "w-full justify-start gap-3 h-11 text-muted-foreground hover:text-foreground hover:bg-accent/10 transition-all duration-300 hover:scale-105 group",
               !isOpen && "lg:justify-center lg:px-2"
             )}
           >
             <Settings className="h-5 w-5 flex-shrink-0" />
-            {(isOpen || window.innerWidth < 1024) && (
+            {(isOpen) && (
               <span className="animate-fade-in">Einstellungen</span>
+            )}
+            {(!isOpen) && (
+              <span className="hidden lg:group-hover:block lg:absolute lg:left-14 lg:bg-background lg:px-2 lg:py-1 lg:rounded lg:shadow-lg lg:z-50 lg:whitespace-nowrap">
+                Einstellungen
+              </span>
             )}
           </Button>
         </div>
