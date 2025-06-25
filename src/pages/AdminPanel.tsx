@@ -12,6 +12,8 @@ import { toast } from 'sonner';
 import AdminHeader from '@/components/admin/AdminHeader';
 import CategoryManager from '@/components/admin/CategoryManager';
 import ApiVideoUpload from '@/components/admin/ApiVideoUpload';
+import ApiKeyManager from '@/components/admin/ApiKeyManager';
+import ApiDocumentation from '@/components/admin/ApiDocumentation';
 
 const AdminPanel = () => {
   const { user, isAdmin, loading } = useAuth();
@@ -150,13 +152,15 @@ const AdminPanel = () => {
       
       <div className="container mx-auto px-4 py-6">
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-8">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="videos">Videos</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
             <TabsTrigger value="categories">Categories</TabsTrigger>
             <TabsTrigger value="upload">Upload</TabsTrigger>
             <TabsTrigger value="api-upload">API Upload</TabsTrigger>
+            <TabsTrigger value="api-keys">API Keys</TabsTrigger>
+            <TabsTrigger value="api-docs">API Docs</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -348,6 +352,14 @@ const AdminPanel = () => {
 
           <TabsContent value="api-upload" className="space-y-6">
             <ApiVideoUpload onUploadSuccess={fetchVideos} />
+          </TabsContent>
+
+          <TabsContent value="api-keys" className="space-y-6">
+            <ApiKeyManager />
+          </TabsContent>
+
+          <TabsContent value="api-docs" className="space-y-6">
+            <ApiDocumentation />
           </TabsContent>
         </Tabs>
       </div>
