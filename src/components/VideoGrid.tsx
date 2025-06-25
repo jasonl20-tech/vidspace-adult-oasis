@@ -1,3 +1,4 @@
+
 import React from 'react';
 import VideoCard from './VideoCard';
 import VideoCardSkeleton from './VideoCardSkeleton';
@@ -17,7 +18,9 @@ const VideoGrid = ({ filter = 'home' }: VideoGridProps) => {
         thumbnail: '/placeholder.svg',
         duration: '12:34',
         views: '1.2M',
-        uploadedAt: '2 days ago',
+        likes: '85K',
+        uploadDate: '2 days ago',
+        creator: 'Creator One',
       },
       {
         id: '2',
@@ -25,7 +28,9 @@ const VideoGrid = ({ filter = 'home' }: VideoGridProps) => {
         thumbnail: '/placeholder.svg',
         duration: '8:22',
         views: '950K',
-        uploadedAt: '1 week ago',
+        likes: '62K',
+        uploadDate: '1 week ago',
+        creator: 'Creator Two',
       },
       {
         id: '3',
@@ -33,7 +38,9 @@ const VideoGrid = ({ filter = 'home' }: VideoGridProps) => {
         thumbnail: '/placeholder.svg',
         duration: '15:48',
         views: '2.1M',
-        uploadedAt: '3 weeks ago',
+        likes: '120K',
+        uploadDate: '3 weeks ago',
+        creator: 'Creator Three',
       },
       {
         id: '4',
@@ -41,7 +48,9 @@ const VideoGrid = ({ filter = 'home' }: VideoGridProps) => {
         thumbnail: '/placeholder.svg',
         duration: '10:15',
         views: '780K',
-        uploadedAt: '1 month ago',
+        likes: '45K',
+        uploadDate: '1 month ago',
+        creator: 'Creator Four',
       },
       {
         id: '5',
@@ -49,7 +58,9 @@ const VideoGrid = ({ filter = 'home' }: VideoGridProps) => {
         thumbnail: '/placeholder.svg',
         duration: '6:52',
         views: '1.5M',
-        uploadedAt: '2 months ago',
+        likes: '95K',
+        uploadDate: '2 months ago',
+        creator: 'Creator Five',
       },
     ];
 
