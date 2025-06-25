@@ -1,4 +1,3 @@
-
 import React from 'react';
 import VideoCard from './VideoCard';
 
@@ -111,7 +110,7 @@ const VideoGrid = () => {
   const latestVideos = videos.slice(7);
 
   return (
-    <div className="p-3 sm:p-4 lg:p-6 space-y-8 sm:space-y-12">
+    <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-6 space-y-8 sm:space-y-12">
       {/* Featured Section */}
       <section className="space-y-4 sm:space-y-6">
         <div className="flex items-center justify-between">
@@ -128,9 +127,9 @@ const VideoGrid = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 justify-items-center">
           {featuredVideos.map((video, index) => (
-            <div key={`featured-${index}`} className="animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+            <div key={`featured-${index}`} className="w-full max-w-sm animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
               <VideoCard {...video} />
             </div>
           ))}
@@ -147,9 +146,9 @@ const VideoGrid = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 justify-items-center">
           {trendingVideos.map((video, index) => (
-            <div key={`trending-${index}`} className="slide-in-left" style={{ animationDelay: `${index * 0.15}s` }}>
+            <div key={`trending-${index}`} className="w-full max-w-sm slide-in-left" style={{ animationDelay: `${index * 0.15}s` }}>
               <VideoCard {...video} />
             </div>
           ))}
@@ -165,9 +164,9 @@ const VideoGrid = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 justify-items-center">
           {latestVideos.map((video, index) => (
-            <div key={`latest-${index}`} className="slide-in-right" style={{ animationDelay: `${index * 0.1}s` }}>
+            <div key={`latest-${index}`} className="w-full max-w-sm slide-in-right" style={{ animationDelay: `${index * 0.1}s` }}>
               <VideoCard {...video} />
             </div>
           ))}
