@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Heart, Shield, Mail, Phone, MapPin, Twitter, Instagram, Youtube } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,9 +12,9 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-red-700 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">V</span>
+                <span className="text-white font-bold text-sm">H</span>
               </div>
-              <h3 className="text-xl font-bold gradient-text">VidSpace</h3>
+              <h3 className="text-xl font-bold gradient-text">Hub4Porn</h3>
             </div>
             <p className="text-sm text-muted-foreground">
               Die modernste Plattform für erwachsene Unterhaltung. Sicher, diskret und qualitativ hochwertig.
@@ -89,7 +88,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center gap-1">
                 <Mail className="h-3 w-3" />
-                <span>support@vidspace.com</span>
+                <span>support@hub4porn.com</span>
               </div>
               <div className="flex items-center gap-1">
                 <Phone className="h-3 w-3" />
@@ -97,7 +96,7 @@ const Footer = () => {
               </div>
             </div>
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <span>© 2024 VidSpace. Gemacht mit</span>
+              <span>© 2024 Hub4Porn. Gemacht mit</span>
               <Heart className="h-3 w-3 text-red-500" />
               <span>in Deutschland</span>
             </div>
