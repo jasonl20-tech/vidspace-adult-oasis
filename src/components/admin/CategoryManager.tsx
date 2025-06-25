@@ -260,7 +260,6 @@ const CategoryManager = () => {
                   <Switch
                     checked={category.is_active}
                     onCheckedChange={() => toggleStatus(category.id, category.is_active)}
-                    size="sm"
                   />
                 </div>
               </div>

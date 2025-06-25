@@ -14,11 +14,11 @@ import {
 } from 'lucide-react';
 
 const AdminHeader = () => {
-  const { user, logout } = useAuth();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await logout();
+    await signOut();
     navigate('/auth');
   };
 
