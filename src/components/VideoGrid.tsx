@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import VideoCard from './VideoCard';
+import VideoCardSkeleton from './VideoCardSkeleton';
 
 interface Video {
   id: string;
@@ -13,6 +14,7 @@ interface Video {
   created_at: string;
   is_premium: boolean;
   slug: string;
+  video_url?: string;
   categories: { name: string; color: string } | null;
   profiles: { username: string } | null;
 }
@@ -69,55 +71,29 @@ const VideoGrid = () => {
     return `vor ${diffDays} Tagen`;
   };
 
-  // Fallback mock data if no videos in database
-  const mockVideos = [
-    {
-      id: 'mock-1',
-      title: "Heißes Amateur-Video mit geiler Blondine",
-      thumbnail: "photo-1649972904349-6e44c42644a7",
-      duration: "12:34",
-      views: "2.1M",
-      likes: "45K",
-      uploadDate: "vor 2 Stunden",
-      creator: "SexyBlonde23",
-      isHD: true,
-    },
-    {
-      id: 'mock-2',
-      title: "Premium Content - Exklusive Szene",
-      thumbnail: "photo-1581091226825-a6a2a5aee158",
-      duration: "18:45",
-      views: "856K",
-      likes: "23K",
-      uploadDate: "vor 1 Tag",
-      creator: "PremiumProducer",
-      isPremium: true,
-      isHD: true,
-    },
-    {
-      id: 'mock-3',
-      title: "Wilde Nacht zu zweit - Amateur",
-      thumbnail: "photo-1721322800607-8c38375eef04",
-      duration: "08:22",
-      views: "1.5M",
-      likes: "67K",
-      uploadDate: "vor 3 Stunden",
-      creator: "CoupleXXX",
-    },
-  ];
-
+  // Loading state with skeletons
   if (loading) {
     return (
-      <div className="w-full min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">Loading videos...</div>
+      <div className="w-full min-h-screen bg-background">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 py-4 sm:py-6 space-y-6 sm:space-y-8">
+          <section className="space-y-3 sm:space-y-4">
+            <div className="px-1">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text">Loading Videos...</h2>
+            </div>
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
+              {Array.from({ length: 12 }).map((_, index) => (
+                <VideoCardSkeleton key={index} />
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
     );
   }
 
-  const displayVideos = videos.length > 0 ? videos : [];
-  const featuredVideos = videos.length > 0 ? videos.slice(0, 3) : mockVideos;
-  const trendingVideos = videos.length > 0 ? videos.slice(3, 7) : mockVideos;
-  const latestVideos = videos.length > 0 ? videos.slice(7) : mockVideos;
+  const featuredVideos = videos.slice(0, 6);
+  const trendingVideos = videos.slice(6, 14);
+  const latestVideos = videos.slice(14);
 
   return (
     <div className="w-full min-h-screen bg-background">
@@ -138,15 +114,46 @@ const VideoGrid = () => {
             </div>
           </div>
           
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 lg:gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
             {featuredVideos.map((video, index) => (
-              <div key={`featured-${video.id || index}`} className="w-full animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                {videos.length > 0 ? (
+              <div key={video.id} className="w-full animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                <VideoCard
+                  id={video.id}
+                  slug={video.slug}
+                  title={video.title}
+                  thumbnail={video.thumbnail_url || "photo-1649972904349-6e44c42644a7"}
+                  duration={formatDuration(video.duration)}
+                  views={formatViews(video.view_count)}
+                  likes={formatViews(video.like_count)}
+                  uploadDate={formatDate(video.created_at)}
+                  creator={video.profiles?.username || 'Anonymous'}
+                  isPremium={video.is_premium}
+                  isHD={true}
+                  videoUrl={video.video_url}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {videos.length > 6 && (
+          <section className="space-y-3 sm:space-y-4">
+            <div className="flex items-center gap-2 px-1">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold">Trending heute</h2>
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-gradient-to-r from-red-500 to-orange-500 rounded-full"></div>
+                <span className="text-xs text-muted-foreground">Hot</span>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
+              {trendingVideos.map((video, index) => (
+                <div key={video.id} className="w-full slide-in-left" style={{ animationDelay: `${index * 0.15}s` }}>
                   <VideoCard
                     id={video.id}
                     slug={video.slug}
                     title={video.title}
-                    thumbnail={video.thumbnail_url || "photo-1649972904349-6e44c42644a7"}
+                    thumbnail={video.thumbnail_url || "photo-1581091226825-a6a2a5aee158"}
                     duration={formatDuration(video.duration)}
                     views={formatViews(video.view_count)}
                     likes={formatViews(video.like_count)}
@@ -154,84 +161,47 @@ const VideoGrid = () => {
                     creator={video.profiles?.username || 'Anonymous'}
                     isPremium={video.is_premium}
                     isHD={true}
+                    videoUrl={video.video_url}
                   />
-                ) : (
-                  <VideoCard {...video} />
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Show more sections only if we have real videos */}
-        {videos.length > 3 && (
-          <>
-            {/* Trending Section */}
-            <section className="space-y-3 sm:space-y-4">
-              <div className="flex items-center gap-2 px-1">
-                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold">Trending heute</h2>
-                <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-gradient-to-r from-red-500 to-orange-500 rounded-full"></div>
-                  <span className="text-xs text-muted-foreground">Hot</span>
                 </div>
-              </div>
-              
-              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
-                {trendingVideos.map((video, index) => (
-                  <div key={`trending-${video.id}`} className="w-full slide-in-left" style={{ animationDelay: `${index * 0.15}s` }}>
-                    <VideoCard
-                      id={video.id}
-                      slug={video.slug}
-                      title={video.title}
-                      thumbnail={video.thumbnail_url || "photo-1581091226825-a6a2a5aee158"}
-                      duration={formatDuration(video.duration)}
-                      views={formatViews(video.view_count)}
-                      likes={formatViews(video.like_count)}
-                      uploadDate={formatDate(video.created_at)}
-                      creator={video.profiles?.username || 'Anonymous'}
-                      isPremium={video.is_premium}
-                      isHD={true}
-                    />
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Latest Section */}
-            {videos.length > 7 && (
-              <section className="space-y-3 sm:space-y-4 pb-4">
-                <div className="flex items-center gap-2 px-1">
-                  <h2 className="text-lg sm:text-xl lg:text-2xl font-bold">Neueste Videos</h2>
-                  <div className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full">
-                    Neu
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 lg:gap-4">
-                  {latestVideos.map((video, index) => (
-                    <div key={`latest-${video.id}`} className="w-full slide-in-right" style={{ animationDelay: `${index * 0.1}s` }}>
-                      <VideoCard
-                        id={video.id}
-                        slug={video.slug}
-                        title={video.title}
-                        thumbnail={video.thumbnail_url || "photo-1721322800607-8c38375eef04"}
-                        duration={formatDuration(video.duration)}
-                        views={formatViews(video.view_count)}
-                        likes={formatViews(video.like_count)}
-                        uploadDate={formatDate(video.created_at)}
-                        creator={video.profiles?.username || 'Anonymous'}
-                        isPremium={video.is_premium}
-                        isHD={true}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-          </>
+              ))}
+            </div>
+          </section>
         )}
 
-        {videos.length === 0 && (
+        {videos.length > 14 && (
+          <section className="space-y-3 sm:space-y-4 pb-4">
+            <div className="flex items-center gap-2 px-1">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold">Neueste Videos</h2>
+              <div className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full">
+                Neu
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
+              {latestVideos.map((video, index) => (
+                <div key={video.id} className="w-full slide-in-right" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <VideoCard
+                    id={video.id}
+                    slug={video.slug}
+                    title={video.title}
+                    thumbnail={video.thumbnail_url || "photo-1721322800607-8c38375eef04"}
+                    duration={formatDuration(video.duration)}
+                    views={formatViews(video.view_count)}
+                    likes={formatViews(video.like_count)}
+                    uploadDate={formatDate(video.created_at)}
+                    creator={video.profiles?.username || 'Anonymous'}
+                    isPremium={video.is_premium}
+                    isHD={true}
+                    videoUrl={video.video_url}
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {videos.length === 0 && !loading && (
           <div className="text-center py-12">
             <h3 className="text-lg font-medium mb-2">Noch keine Videos verfügbar</h3>
             <p className="text-muted-foreground">Admins können Videos über das Admin Panel hochladen.</p>

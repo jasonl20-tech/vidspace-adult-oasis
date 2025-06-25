@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import ThemeToggle from './ThemeToggle';
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -69,6 +70,8 @@ const Header = ({ onToggleSidebar }: HeaderProps) => {
           >
             <Search className="h-4 w-4" />
           </Button>
+          
+          <ThemeToggle />
           
           <Button 
             variant="ghost" 
